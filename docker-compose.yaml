@@ -29,7 +29,7 @@ services:
       - TZ=Pacific/Auckland
       - PLEX_CLAIM=<claimToken>
     volumes:
-      - '~/Dockers/plex/config:/config'
-      - '~/Dockers/plex/transcode:/transcode'
+      - '/home/danieldbird/Dockers/plex/config:/config'
+      - '/home/danieldbird/Dockers/plex/transcode:/transcode'
       - '/mnt/nas/Media:/data'
     image: plexinc/pms-docker
