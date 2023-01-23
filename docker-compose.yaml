@@ -20,3 +20,16 @@ services:
     labels:
       - 'diun.enable=true'
     restart: always
+
+  pms-docker:
+    container_name: plex
+    network_mode: host
+    restart: always
+    environment:
+      - TZ=Pacific/Auckland
+      - PLEX_CLAIM=<claimToken>
+    volumes:
+      - '~/Dockers/plex/config:/config'
+      - '~/Dockers/plex/transcode:/transcode'
+      - '/mnt/nas/Media:/data'
+    image: plexinc/pms-docker
