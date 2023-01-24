@@ -93,3 +93,17 @@ services:
     volumes:
       - '/home/danieldbird/Dockers/esphome/config:/config'
     image: esphome/esphome
+
+  dahuavto2mqtt:
+    container_name: dahuavto2mqtt
+    environment:
+      - DAHUA_VTO_HOST=$DAHUA_VTO_HOST
+      - DAHUA_VTO_USERNAME=$DAHUA_VTO_USERNAME
+      - DAHUA_VTO_PASSWORD=$DAHUA_VTO_PASSWORD
+      - MQTT_BROKER_HOST=$MQTT_BROKER_HOST
+      - MQTT_BROKER_PORT=$MQTT_BROKER_PORT
+      - MQTT_BROKER_TOPIC_PREFIX=DahuaVTO
+      - MQTT_BROKER_CLIENT_ID=DahuaVTO2MQTT
+      - DEBUG=True
+    restart: always
+    image: 'eladbar/dahuavto2mqtt:latest'
