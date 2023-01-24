@@ -48,3 +48,18 @@ services:
     network_mode: host
     restart: always
     image: 'ghcr.io/linuxserver/radarr:latest'
+
+  sonarr:
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Pacific/Auckland
+    volumes:
+      - '/home/danieldbird/Dockers/sonarr/config:/config'
+      - '/mnt/nas/Media/TV Shows/Adult:/adult'
+      - '/mnt/nas/Media/TV Shows/Kid:/kid'
+      - '/mnt/nas/Media/Downloads:/downloads'
+    network_mode: host
+    restart: always
+    image: 'ghcr.io/linuxserver/sonarr:latest'
