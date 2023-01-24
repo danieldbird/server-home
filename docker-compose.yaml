@@ -43,6 +43,23 @@ services:
       - '/mnt/nas/Media:/data'
     image: plexinc/pms-docker:latest
 
+  transmission:
+    container_name: transmission
+    restart: always
+    ports:
+      - '9091:9091'
+      - '51413:51413'
+      - '51413:51413/udp'
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Pacific/Auckland
+    volumes:
+      - '/home/danieldbird/Dockers/transmission/config:/config'
+      - '/mnt/nas/Media/Downloads:/downloads'
+      - '/mnt/nas/Media/Downloads/Watch:/watch'
+    image: ghcr.io/linuxserver/transmission:latest
+
   jackett:
     container_name: jackett
     environment:
