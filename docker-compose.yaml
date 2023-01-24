@@ -21,6 +21,15 @@ services:
       - 'diun.enable=true'
     restart: always
 
+  home-assistant:
+    container_name: home-assistant
+    restart: always
+    network_mode: host
+    volumes:
+      - '/home/danieldbird/Dockers/home-assistant:/config'
+      - '/etc/localtime:/etc/localtime:ro'
+    image: 'homeassistant/home-assistant:stable'
+
   plex:
     container_name: plex
     network_mode: host
