@@ -177,3 +177,14 @@ services:
     volumes:
       - '/home/danieldbird/Dockers/minecraft/data:/data'
     image: 'itzg/minecraft-server:latest'
+
+  duckdns:
+    container_name: duckdns
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Pacific/Auckland
+      - SUBDOMAINS=$DUCKDNS_SUBDOMAIN
+      - TOKEN=$DUCKDNS_TOKEN
+    restart: always
+    image: 'ghcr.io/linuxserver/duckdns:latest'
