@@ -103,6 +103,20 @@ services:
     restart: always
     image: 'ghcr.io/linuxserver/sonarr:latest'
 
+  readarr:
+    container_name: readarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Pacific/Auckland
+    volumes:
+      - '/home/danieldbird/Dockers/readarr/config:/config'
+      - '/mnt/nas/Media/Books:/books'
+      - '/mnt/nas/Media/Downloads:/downloads'
+    network_mode: host
+    restart: always
+    image: 'ghcr.io/linuxserver/readarr:nightly'
+
   esphome:
     container_name: esphome
     restart: always
