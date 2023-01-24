@@ -94,6 +94,17 @@ services:
       - '/home/danieldbird/Dockers/esphome/config:/config'
     image: esphome/esphome
 
+  mqtt:
+    container_name: mqtt
+    restart: always
+    ports:
+      - '1883:1883'
+    volumes:
+      - '/home/danieldbird/Dockers/mqtt/config/mosquitto.conf:/mosquitto/config/mosquitto.conf'
+      - '/home/danieldbird/Dockers/mqtt/data:/mosquitto/data'
+      - '/home/danieldbird/Dockers/mqtt/log:/mosquitto/log'
+    image: 'eclipse-mosquitto:latest'
+
   dahuavto2mqtt:
     container_name: dahuavto2mqtt
     environment:
