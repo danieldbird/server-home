@@ -85,3 +85,11 @@ services:
     network_mode: host
     restart: always
     image: 'ghcr.io/linuxserver/sonarr:latest'
+
+  esphome:
+    container_name: esphome
+    restart: always
+    network_mode: host
+    volumes:
+      - '/home/danieldbird/Dockers/esphome/config:/config'
+    image: esphome/esphome
