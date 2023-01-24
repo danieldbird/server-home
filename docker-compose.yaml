@@ -21,7 +21,7 @@ services:
       - 'diun.enable=true'
     restart: always
 
-  pms-docker:
+  plex:
     container_name: plex
     network_mode: host
     restart: always
