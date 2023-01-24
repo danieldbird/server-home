@@ -33,3 +33,18 @@ services:
       - '/home/danieldbird/Dockers/plex/transcode:/transcode'
       - '/mnt/nas/Media:/data'
     image: plexinc/pms-docker
+
+  radarr:
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Pacific/Auckland
+    volumes:
+      - '/home/danieldbird/Dockers/radarr/config:/config'
+      - '/mnt/nas/Media/Movies/Adult:/adult'
+      - '/mnt/nas/Media/Movies/Kid:/kid'
+      - '/mnt/nas/Media/Downloads:/downloads'
+    network_mode: host
+    restart: always
+    image: 'ghcr.io/linuxserver/radarr:latest'
