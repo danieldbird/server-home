@@ -16,7 +16,7 @@ services:
       - DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT=true
       - DIUN_NOTIF_SLACK_WEBHOOKURL=$DIUN_NOTIF_SLACK_WEBHOOKURL
       - DIUN_NOTIF_SLACK_RENDERFIELDS=true
-      - DIUN_NOTIF_SLACK_TEMPLATEBODY='{{.Image}}:{{.Tag}} is available'
+      - DIUN_NOTIF_SLACK_TEMPLATEBODY='hello'
 
     labels:
       - diun.enable=true
