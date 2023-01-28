@@ -14,6 +14,9 @@ services:
       - DIUN_WATCH_JITTER=30s
       - DIUN_PROVIDERS_DOCKER=true
       - DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT=true
+      - DIUN_NOTIF_SLACK_WEBHOOKURL=$DIUN_NOTIF_SLACK_WEBHOOKURL
+      - DIUN_NOTIF_SLACK_RENDERFIELDS=true
+      - DIUN_NOTIF_SLACK_TEMPLATEBODY='{{.Image}}:{{.Tag}} is available'
 
     labels:
       - diun.enable=true
