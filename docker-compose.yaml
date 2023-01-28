@@ -175,6 +175,8 @@ services:
     environment:
       - EULA=TRUE
       - MEMORY=2G
+    tty: true
+    stdin_open: true
     restart: always
     volumes:
       - '/home/danieldbird/Dockers/minecraft/data:/data'
