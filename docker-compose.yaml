@@ -30,7 +30,7 @@ services:
     volumes:
       - '/home/danieldbird/Dockers/home-assistant:/config'
       - '/etc/localtime:/etc/localtime:ro'
-    image: 'homeassistant/home-assistant:stable'
+    image: 'homeassistant/home-assistant:latest'
 
   plex:
     container_name: plex
@@ -117,7 +117,7 @@ services:
       - '/mnt/nas/Media/Downloads:/downloads'
     network_mode: host
     restart: always
-    image: 'ghcr.io/linuxserver/readarr:nightly'
+    image: 'lscr.io/linuxserver/readarr:nightly'
 
   calibre:
     container_name: calibre
@@ -140,7 +140,7 @@ services:
     network_mode: host
     volumes:
       - '/home/danieldbird/Dockers/esphome/config:/config'
-    image: esphome/esphome
+    image: esphome/esphome:latest
 
   mqtt:
     container_name: mqtt
