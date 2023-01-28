@@ -15,6 +15,7 @@ services:
       - DIUN_PROVIDERS_DOCKER=true
       - DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT=true
       - DIUN_NOTIF_SLACK_WEBHOOKURL=$DIUN_NOTIF_SLACK_WEBHOOKURL
+      - DIUN_WATCH_FIRSTCHECKNOTIF=true
       - DIUN_NOTIF_SLACK_RENDERFIELDS=true
       - DIUN_NOTIF_SLACK_TEMPLATEBODY=Camera Server=Docker tag {{ .Entry.Image }} which you subscribed to through {{ .Entry.Provider }} provider has been released.
     labels:
