@@ -37,7 +37,7 @@ services:
     restart: always
     environment:
       - TZ=Pacific/Auckland
-      - PLEX_CLAIM=<claimToken>
+      - PLEX_CLAIM=$PLEX_CLAIM
     volumes:
       - '/home/danieldbird/Dockers/plex/config:/config'
       - '/home/danieldbird/Dockers/plex/transcode:/transcode'
