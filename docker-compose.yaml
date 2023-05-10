@@ -53,6 +53,7 @@ services:
       - TZ=Pacific/Auckland
     volumes:
       - '/home/danieldbird/Dockers/jellyfin/config:/config'
+      - '/mnt/nas/Media/Live TV:/data/livetv'
       - '/mnt/nas/Media/TV Shows:/data/tvshows'
       - '/mnt/nas/Media/Movies:/data/movies'
     ports:
