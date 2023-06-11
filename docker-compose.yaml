@@ -1,4 +1,14 @@
 services:
+  nginxproxymanager:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
   diun:
     container_name: diun
     command: serve
@@ -19,12 +29,12 @@ services:
 
     labels:
       - diun.enable=true
-    restart: always
+    restart: unless-stopped
     image: crazymax/diun:latest
 
   home-assistant:
     container_name: home-assistant
-    restart: always
+    restart: unless-stopped
     network_mode: host
     volumes:
       - '/home/danieldbird/Dockers/home-assistant:/config'
@@ -34,7 +44,7 @@ services:
   plex:
     container_name: plex
     network_mode: host
-    restart: always
+    restart: unless-stopped
     environment:
       - TZ=Pacific/Auckland
       - PLEX_CLAIM=$PLEX_CLAIM
@@ -46,7 +56,7 @@ services:
 
   jellyfin:
     container_name: jellyfin
-    restart: always
+    restart: unless-stopped
     environment:
       - PUID=1000
       - PGID=1000
@@ -62,7 +72,7 @@ services:
 
   transmission:
     container_name: transmission
-    restart: always
+    restart: unless-stopped
     ports:
       - '9091:9091'
       - '51413:51413'
@@ -87,7 +97,7 @@ services:
       - '/home/danieldbird/Dockers/jackett/config:/config'
       - '/mnt/nas/Media/Downloads:/downloads'
     network_mode: host
-    restart: always
+    restart: unless-stopped
     image: 'ghcr.io/linuxserver/jackett:latest'
 
   radarr:
@@ -102,7 +112,7 @@ services:
       - '/mnt/nas/Media/Movies/Kid:/kid'
       - '/mnt/nas/Media/Downloads:/downloads'
     network_mode: host
-    restart: always
+    restart: unless-stopped
     image: 'ghcr.io/linuxserver/radarr:latest'
 
   sonarr:
@@ -117,7 +127,7 @@ services:
       - '/mnt/nas/Media/TV Shows/Kid:/kid'
       - '/mnt/nas/Media/Downloads:/downloads'
     network_mode: host
-    restart: always
+    restart: unless-stopped
     image: 'ghcr.io/linuxserver/sonarr:latest'
 
   readarr:
@@ -131,7 +141,7 @@ services:
       - '/mnt/nas/Media/Books:/books'
       - '/mnt/nas/Media/Downloads:/downloads'
     network_mode: host
-    restart: always
+    restart: unless-stopped
     image: 'lscr.io/linuxserver/readarr:nightly'
 
   calibre:
@@ -146,12 +156,12 @@ services:
     volumes:
       - '/home/danieldbird/Dockers/calibre/config:/config'
       - '/mnt/nas/Media/Books:/books'
-    restart: always
+    restart: unless-stopped
     image: 'ghcr.io/linuxserver/calibre:latest'
 
   esphome:
     container_name: esphome
-    restart: always
+    restart: unless-stopped
     network_mode: host
     volumes:
       - '/home/danieldbird/Dockers/esphome/config:/config'
@@ -159,7 +169,7 @@ services:
 
   mqtt:
     container_name: mqtt
-    restart: always
+    restart: unless-stopped
     ports:
       - '1883:1883'
     volumes:
@@ -179,7 +189,7 @@ services:
       - MQTT_BROKER_TOPIC_PREFIX=DahuaVTO
       - MQTT_BROKER_CLIENT_ID=DahuaVTO2MQTT
       - DEBUG=True
-    restart: always
+    restart: unless-stopped
     image: 'eladbar/dahuavto2mqtt:latest'
 
   minecraft:
@@ -190,7 +200,7 @@ services:
     environment:
       - EULA=TRUE
       - MEMORY=2G
-    restart: always
+    restart: unless-stopped
     volumes:
       - '/home/danieldbird/Dockers/minecraft/data:/data'
     image: 'itzg/minecraft-server:latest'
@@ -203,5 +213,5 @@ services:
       - TZ=Pacific/Auckland
       - SUBDOMAINS=$DUCKDNS_SUBDOMAIN
       - TOKEN=$DUCKDNS_TOKEN
-    restart: always
+    restart: unless-stopped
     image: 'ghcr.io/linuxserver/duckdns:latest'
