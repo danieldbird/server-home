@@ -42,7 +42,9 @@ services:
       - '/etc/localtime:/etc/localtime:ro'
     image: 'homeassistant/home-assistant:latest'
 
-  node-red:
+  nodered:
+    container_name: nodered
+    restart: unless-stopped
     image: nodered/node-red:latest
     environment:
       - TZ=Pacific/Auckland
