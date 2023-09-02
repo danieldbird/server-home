@@ -42,6 +42,15 @@ services:
       - '/etc/localtime:/etc/localtime:ro'
     image: 'homeassistant/home-assistant:latest'
 
+  node-red:
+    image: nodered/node-red:latest
+    environment:
+      - TZ=Pacific/Auckland
+    ports:
+      - '1880:1880'
+    volumes:
+      - '/home/danieldbird/Dockers/nodered/data:/data'
+
   plex:
     container_name: plex
     network_mode: host
