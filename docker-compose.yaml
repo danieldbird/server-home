@@ -1,12 +1,14 @@
 services:
-  uptime-kuma:
-    container_name: uptime-kuma
-    image: louislam/uptime-kuma:latest
-    volumes:
-      - /home/danieldbird/Dockers/uptime-kuma:/app/data
-    ports:
-      - '3001:3001'
+  duckdns:
+    container_name: duckdns
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Pacific/Auckland
+      - SUBDOMAINS=$DUCKDNS_SUBDOMAIN
+      - TOKEN=$DUCKDNS_TOKEN
     restart: unless-stopped
+    image: 'ghcr.io/linuxserver/duckdns:latest'
 
   nginxproxymanager:
     container_name: nginxproxymanager
@@ -17,8 +19,17 @@ services:
       - '81:81'
       - '443:443'
     volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
+      - /home/danieldbird/Dockers/nginxproxymanager/data:/data
+      - /home/danieldbird/Dockers/nginxproxymanager/etc/letsencrypt:/etc/letsencrypt
+
+  uptime-kuma:
+    container_name: uptime-kuma
+    image: louislam/uptime-kuma:latest
+    volumes:
+      - /home/danieldbird/Dockers/uptime-kuma/app/data:/app/data
+    ports:
+      - '3001:3001'
+    restart: unless-stopped
 
   diun:
     container_name: diun
@@ -52,45 +63,24 @@ services:
       - '/etc/localtime:/etc/localtime:ro'
     image: 'homeassistant/home-assistant:latest'
 
-  # nodered:
-  #   container_name: nodered
-  #   restart: unless-stopped
-  #   image: nodered/node-red:latest
-  #   environment:
-  #     - TZ=Pacific/Auckland
-  #   ports:
-  #     - '1880:1880'
-  #   volumes:
-  #     - '/home/danieldbird/Dockers/nodered/data:/data'
-
-  plex:
-    container_name: plex
+  esphome:
+    container_name: esphome
+    restart: unless-stopped
     network_mode: host
-    restart: unless-stopped
-    environment:
-      - TZ=Pacific/Auckland
-      - PLEX_CLAIM=$PLEX_CLAIM
     volumes:
-      - '/home/danieldbird/Dockers/plex/config:/config'
-      - '/home/danieldbird/Dockers/plex/transcode:/transcode'
-      - '/mnt/nas/Media:/data'
-    image: plexinc/pms-docker:latest
+      - '/home/danieldbird/Dockers/esphome/config:/config'
+    image: esphome/esphome:latest
 
-  jellyfin:
-    container_name: jellyfin
+  mqtt:
+    container_name: mqtt
     restart: unless-stopped
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Pacific/Auckland
-    volumes:
-      - '/home/danieldbird/Dockers/jellyfin/config:/config'
-      - '/mnt/nas/Media/Live TV:/data/livetv'
-      - '/mnt/nas/Media/TV Shows:/data/tvshows'
-      - '/mnt/nas/Media/Movies:/data/movies'
     ports:
-      - 8096:8096
-    image: lscr.io/linuxserver/jellyfin:latest
+      - '1883:1883'
+    volumes:
+      - '/home/danieldbird/Dockers/mqtt/config/mosquitto.conf:/mosquitto/config/mosquitto.conf'
+      - '/home/danieldbird/Dockers/mqtt/data:/mosquitto/data'
+      - '/home/danieldbird/Dockers/mqtt/log:/mosquitto/log'
+    image: 'eclipse-mosquitto:latest'
 
   transmission:
     container_name: transmission
@@ -122,6 +112,19 @@ services:
     restart: unless-stopped
     image: 'ghcr.io/linuxserver/jackett:latest'
 
+  plex:
+    container_name: plex
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - TZ=Pacific/Auckland
+      - PLEX_CLAIM=$PLEX_CLAIM
+    volumes:
+      - '/home/danieldbird/Dockers/plex/config:/config'
+      - '/home/danieldbird/Dockers/plex/transcode:/transcode'
+      - '/mnt/nas/Media:/data'
+    image: plexinc/pms-docker:latest
+
   radarr:
     container_name: radarr
     environment:
@@ -152,88 +155,58 @@ services:
     restart: unless-stopped
     image: 'ghcr.io/linuxserver/sonarr:latest'
 
-  readarr:
-    container_name: readarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Pacific/Auckland
-    volumes:
-      - '/home/danieldbird/Dockers/readarr/config:/config'
-      - '/mnt/nas/Media/Books:/books'
-      - '/mnt/nas/Media/Downloads:/downloads'
-    network_mode: host
-    restart: unless-stopped
-    image: 'lscr.io/linuxserver/readarr:nightly'
+  # readarr:
+  #   container_name: readarr
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Pacific/Auckland
+  #   volumes:
+  #     - '/home/danieldbird/Dockers/readarr/config:/config'
+  #     - '/mnt/nas/Media/Books:/books'
+  #     - '/mnt/nas/Media/Downloads:/downloads'
+  #   network_mode: host
+  #   restart: unless-stopped
+  #   image: 'lscr.io/linuxserver/readarr:nightly'
 
-  calibre:
-    container_name: calibre
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Pacific/Auckland
-    ports:
-      - '8080:8080'
-      - '8081:8081'
-    volumes:
-      - '/home/danieldbird/Dockers/calibre/config:/config'
-      - '/mnt/nas/Media/Books:/books'
-    restart: unless-stopped
-    image: 'ghcr.io/linuxserver/calibre:latest'
+  # calibre:
+  #   container_name: calibre
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Pacific/Auckland
+  #   ports:
+  #     - '8080:8080'
+  #     - '8081:8081'
+  #   volumes:
+  #     - '/home/danieldbird/Dockers/calibre/config:/config'
+  #     - '/mnt/nas/Media/Books:/books'
+  #   restart: unless-stopped
+  #   image: 'ghcr.io/linuxserver/calibre:latest'
 
-  esphome:
-    container_name: esphome
-    restart: unless-stopped
-    network_mode: host
-    volumes:
-      - '/home/danieldbird/Dockers/esphome/config:/config'
-    image: esphome/esphome:latest
+  # dahuavto2mqtt:
+  #   container_name: dahuavto2mqtt
+  #   environment:
+  #     - DAHUA_VTO_HOST=$DAHUA_VTO_HOST
+  #     - DAHUA_VTO_USERNAME=$DAHUA_VTO_USERNAME
+  #     - DAHUA_VTO_PASSWORD=$DAHUA_VTO_PASSWORD
+  #     - MQTT_BROKER_HOST=$MQTT_BROKER_HOST
+  #     - MQTT_BROKER_PORT=$MQTT_BROKER_PORT
+  #     - MQTT_BROKER_TOPIC_PREFIX=DahuaVTO
+  #     - MQTT_BROKER_CLIENT_ID=DahuaVTO2MQTT
+  #     - DEBUG=True
+  #   restart: unless-stopped
+  #   image: 'eladbar/dahuavto2mqtt:latest'
 
-  mqtt:
-    container_name: mqtt
-    restart: unless-stopped
-    ports:
-      - '1883:1883'
-    volumes:
-      - '/home/danieldbird/Dockers/mqtt/config/mosquitto.conf:/mosquitto/config/mosquitto.conf'
-      - '/home/danieldbird/Dockers/mqtt/data:/mosquitto/data'
-      - '/home/danieldbird/Dockers/mqtt/log:/mosquitto/log'
-    image: 'eclipse-mosquitto:latest'
-
-  dahuavto2mqtt:
-    container_name: dahuavto2mqtt
-    environment:
-      - DAHUA_VTO_HOST=$DAHUA_VTO_HOST
-      - DAHUA_VTO_USERNAME=$DAHUA_VTO_USERNAME
-      - DAHUA_VTO_PASSWORD=$DAHUA_VTO_PASSWORD
-      - MQTT_BROKER_HOST=$MQTT_BROKER_HOST
-      - MQTT_BROKER_PORT=$MQTT_BROKER_PORT
-      - MQTT_BROKER_TOPIC_PREFIX=DahuaVTO
-      - MQTT_BROKER_CLIENT_ID=DahuaVTO2MQTT
-      - DEBUG=True
-    restart: unless-stopped
-    image: 'eladbar/dahuavto2mqtt:latest'
-
-  minecraft:
-    container_name: minecraft
-    network_mode: host
-    ports:
-      - '25565:25565'
-    environment:
-      - EULA=TRUE
-      - MEMORY=2G
-    restart: unless-stopped
-    volumes:
-      - '/home/danieldbird/Dockers/minecraft/data:/data'
-    image: 'itzg/minecraft-server:latest'
-
-  duckdns:
-    container_name: duckdns
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Pacific/Auckland
-      - SUBDOMAINS=$DUCKDNS_SUBDOMAIN
-      - TOKEN=$DUCKDNS_TOKEN
-    restart: unless-stopped
-    image: 'ghcr.io/linuxserver/duckdns:latest'
+  # minecraft:
+  #   container_name: minecraft
+  #   network_mode: host
+  #   ports:
+  #     - '25565:25565'
+  #   environment:
+  #     - EULA=TRUE
+  #     - MEMORY=2G
+  #   restart: unless-stopped
+  #   volumes:
+  #     - '/home/danieldbird/Dockers/minecraft/data:/data'
+  #   image: 'itzg/minecraft-server:latest'
