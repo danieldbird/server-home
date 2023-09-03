@@ -104,12 +104,14 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Pacific/Auckland
+    ports:
+      - '9117:9117'
     volumes:
       - '/home/danieldbird/Dockers/jackett/config:/config'
       - '/mnt/nas/Media/Downloads:/downloads'
     network_mode: host
     restart: unless-stopped
-    image: 'ghcr.io/linuxserver/jackett:latest'
+    image: 'lscr.io/linuxserver/jackett:latest'
 
   plex:
     container_name: plex
@@ -153,7 +155,6 @@ services:
     network_mode: host
     restart: unless-stopped
     image: 'ghcr.io/linuxserver/sonarr:latest'
-
 
   # readarr:
   #   container_name: readarr
