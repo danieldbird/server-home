@@ -12,8 +12,6 @@ services:
 
   nginxproxymanager:
     container_name: nginxproxymanager
-    image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
     ports:
       - '80:80'
       - '81:81'
@@ -21,21 +19,23 @@ services:
     volumes:
       - /home/danieldbird/Dockers/nginxproxymanager/data:/data
       - /home/danieldbird/Dockers/nginxproxymanager/etc/letsencrypt:/etc/letsencrypt
+    restart: unless-stopped
+    image: 'jc21/nginx-proxy-manager:latest'
 
   uptime-kuma:
     container_name: uptime-kuma
-    image: louislam/uptime-kuma:latest
-    volumes:
-      - /home/danieldbird/Dockers/uptime-kuma/app/data:/app/data
     ports:
       - '3001:3001'
+    volumes:
+      - /home/danieldbird/Dockers/uptime-kuma/app/data:/app/data
     restart: unless-stopped
+    image: louislam/uptime-kuma:latest
 
   diun:
     container_name: diun
     command: serve
     volumes:
-      - '/home/danieldbird/Dockers/data:/data'
+      - '/home/danieldbird/Dockers/diun/data:/data'
       - '/var/run/docker.sock:/var/run/docker.sock'
     environment:
       - TZ=Pacific/Auckland
@@ -48,7 +48,6 @@ services:
       - DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT=true
       - DIUN_NOTIF_SLACK_WEBHOOKURL=$DIUN_NOTIF_SLACK_WEBHOOKURL
       - DIUN_NOTIF_SLACK_RENDERFIELDS=true
-
     labels:
       - diun.enable=true
     restart: unless-stopped
@@ -56,47 +55,47 @@ services:
 
   home-assistant:
     container_name: home-assistant
-    restart: unless-stopped
-    network_mode: host
     volumes:
-      - '/home/danieldbird/Dockers/home-assistant:/config'
+      - '/home/danieldbird/Dockers/home-assistant/config:/config'
       - '/etc/localtime:/etc/localtime:ro'
+    network_mode: host
+    restart: unless-stopped
     image: 'homeassistant/home-assistant:latest'
 
   esphome:
     container_name: esphome
-    restart: unless-stopped
-    network_mode: host
     volumes:
       - '/home/danieldbird/Dockers/esphome/config:/config'
+    network_mode: host
+    restart: unless-stopped
     image: esphome/esphome:latest
 
-  mqtt:
-    container_name: mqtt
-    restart: unless-stopped
+  eclipse-mosquitto:
+    container_name: eclipse-mosquitto
     ports:
       - '1883:1883'
     volumes:
-      - '/home/danieldbird/Dockers/mqtt/config/mosquitto.conf:/mosquitto/config/mosquitto.conf'
-      - '/home/danieldbird/Dockers/mqtt/data:/mosquitto/data'
-      - '/home/danieldbird/Dockers/mqtt/log:/mosquitto/log'
+      - '/home/danieldbird/Dockers/eclipse-mosquitto/mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf'
+      - '/home/danieldbird/Dockers/eclipse-mosquitto/mosquitto/data:/mosquitto/data'
+      - '/home/danieldbird/Dockers/eclipse-mosquitto/mosquitto/log:/mosquitto/log'
+    restart: unless-stopped
     image: 'eclipse-mosquitto:latest'
 
   transmission:
     container_name: transmission
-    restart: unless-stopped
-    ports:
-      - '9091:9091'
-      - '51413:51413'
-      - '51413:51413/udp'
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Pacific/Auckland
+    ports:
+      - '9091:9091'
+      - '51413:51413'
+      - '51413:51413/udp'
     volumes:
       - '/home/danieldbird/Dockers/transmission/config:/config'
       - '/mnt/nas/Media/Downloads:/downloads'
       - '/mnt/nas/Media/Downloads/Watch:/watch'
+    restart: unless-stopped
     image: ghcr.io/linuxserver/transmission:latest
 
   jackett:
@@ -114,8 +113,6 @@ services:
 
   plex:
     container_name: plex
-    network_mode: host
-    restart: unless-stopped
     environment:
       - TZ=Pacific/Auckland
       - PLEX_CLAIM=$PLEX_CLAIM
@@ -123,6 +120,8 @@ services:
       - '/home/danieldbird/Dockers/plex/config:/config'
       - '/home/danieldbird/Dockers/plex/transcode:/transcode'
       - '/mnt/nas/Media:/data'
+    network_mode: host
+    restart: unless-stopped
     image: plexinc/pms-docker:latest
 
   radarr:
@@ -155,6 +154,7 @@ services:
     restart: unless-stopped
     image: 'ghcr.io/linuxserver/sonarr:latest'
 
+
   # readarr:
   #   container_name: readarr
   #   environment:
@@ -165,7 +165,6 @@ services:
   #     - '/home/danieldbird/Dockers/readarr/config:/config'
   #     - '/mnt/nas/Media/Books:/books'
   #     - '/mnt/nas/Media/Downloads:/downloads'
-  #   network_mode: host
   #   restart: unless-stopped
   #   image: 'lscr.io/linuxserver/readarr:nightly'
 
@@ -200,13 +199,12 @@ services:
 
   # minecraft:
   #   container_name: minecraft
-  #   network_mode: host
   #   ports:
   #     - '25565:25565'
   #   environment:
   #     - EULA=TRUE
   #     - MEMORY=2G
-  #   restart: unless-stopped
   #   volumes:
   #     - '/home/danieldbird/Dockers/minecraft/data:/data'
+  #   restart: unless-stopped
   #   image: 'itzg/minecraft-server:latest'
