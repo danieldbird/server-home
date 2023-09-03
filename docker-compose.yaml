@@ -99,10 +99,13 @@ services:
     image: ghcr.io/linuxserver/transmission:latest
 
   prowlarr:
+    container_name: prowlarr
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Pacific/Auckland
+    ports:
+      - 9696:9696
     volumes:
       - '/home/danieldbird/Dockers/prowlarr/config:/config'
     restart: unless-stopped
