@@ -1,11 +1,11 @@
 services:
   uptime-kuma:
-    image: louislam/uptime-kuma:2
     container_name: uptime-kuma
+    image: louislam/uptime-kuma:latest
     volumes:
       - /home/danieldbird/Dockers/uptime-kuma:/app/data
     ports:
-      - '3001:3001' # <Host Port>:<Container Port>
+      - '3001:3001'
     restart: unless-stopped
 
   nginxproxymanager:
