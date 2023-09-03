@@ -98,6 +98,16 @@ services:
     restart: unless-stopped
     image: ghcr.io/linuxserver/transmission:latest
 
+  prowlarr:
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Pacific/Auckland
+    volumes:
+      - '/home/danieldbird/Dockers/prowlarr/config:/config'
+    restart: unless-stopped
+    image: lscr.io/linuxserver/prowlarr:latest
+
   jackett:
     container_name: jackett
     environment:
