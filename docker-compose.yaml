@@ -35,7 +35,7 @@ services:
     container_name: diun
     command: serve
     volumes:
-      - './data:/data'
+      - '/home/danieldbird/Dockers/data:/data'
       - '/var/run/docker.sock:/var/run/docker.sock'
     environment:
       - TZ=Pacific/Auckland
