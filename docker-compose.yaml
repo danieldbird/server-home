@@ -111,20 +111,6 @@ services:
     restart: unless-stopped
     image: lscr.io/linuxserver/prowlarr:latest
 
-  jackett:
-    container_name: jackett
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Pacific/Auckland
-    ports:
-      - '9117:9117'
-    volumes:
-      - '/home/danieldbird/Dockers/jackett/config:/config'
-      - '/mnt/nas/Media/Downloads:/downloads'
-    restart: unless-stopped
-    image: 'lscr.io/linuxserver/jackett:latest'
-
   plex:
     container_name: plex
     environment:
