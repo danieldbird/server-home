@@ -4,28 +4,28 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Pacific/Auckland
+      - TZ=Australia/Brisbane
       - SUBDOMAINS=$DUCKDNS_SUBDOMAIN
       - TOKEN=$DUCKDNS_TOKEN
     restart: unless-stopped
-    image: 'ghcr.io/linuxserver/duckdns:latest'
+    image: ghcr.io/linuxserver/duckdns:latest
 
   nginxproxymanager:
     container_name: nginxproxymanager
     ports:
-      - '80:80'
-      - '81:81'
-      - '443:443'
+      - 80:80
+      - 81:81
+      - 443:443
     volumes:
       - /home/danieldbird/Dockers/nginxproxymanager/data:/data
       - /home/danieldbird/Dockers/nginxproxymanager/etc/letsencrypt:/etc/letsencrypt
     restart: unless-stopped
-    image: 'jc21/nginx-proxy-manager:latest'
+    image: jc21/nginx-proxy-manager:latest
 
   uptime-kuma:
     container_name: uptime-kuma
     ports:
-      - '3001:3001'
+      - 3001:3001
     volumes:
       - /home/danieldbird/Dockers/uptime-kuma/app/data:/app/data
     restart: unless-stopped
@@ -35,10 +35,10 @@ services:
     container_name: diun
     command: serve
     volumes:
-      - '/home/danieldbird/Dockers/diun/data:/data'
-      - '/var/run/docker.sock:/var/run/docker.sock'
+      - /home/danieldbird/Dockers/diun/data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - TZ=Pacific/Auckland
+      - TZ=Australia/Brisbane
       - LOG_LEVEL=info
       - LOG_JSON=false
       - DIUN_WATCH_WORKERS=20
@@ -56,16 +56,16 @@ services:
   home-assistant:
     container_name: home-assistant
     volumes:
-      - '/home/danieldbird/Dockers/home-assistant/config:/config'
-      - '/etc/localtime:/etc/localtime:ro'
+      - /home/danieldbird/Dockers/home-assistant/config:/config
+      - /etc/localtime:/etc/localtime:ro
     network_mode: host
     restart: unless-stopped
-    image: 'homeassistant/home-assistant:latest'
+    image: homeassistant/home-assistant:latest
 
   esphome:
     container_name: esphome
     volumes:
-      - '/home/danieldbird/Dockers/esphome/config:/config'
+      - /home/danieldbird/Dockers/esphome/config:/config
     network_mode: host
     restart: unless-stopped
     image: esphome/esphome:latest
@@ -86,15 +86,15 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Pacific/Auckland
+      - TZ=Australia/Brisbane
     ports:
-      - '9091:9091'
-      - '51413:51413'
-      - '51413:51413/udp'
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
     volumes:
-      - '/home/danieldbird/Dockers/transmission/config:/config'
-      - '/mnt/nas/Media/Downloads:/downloads'
-      - '/mnt/nas/Media/Downloads/Watch:/watch'
+      - /home/danieldbird/Dockers/transmission/config:/config
+      - /mnt/nas/Media/Downloads:/downloads
+      - /mnt/nas/Media/Downloads/Watch:/watch
     restart: unless-stopped
     image: ghcr.io/linuxserver/transmission:latest
 
@@ -103,23 +103,23 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Pacific/Auckland
+      - TZ=Australia/Brisbane
     ports:
       - 9696:9696
     volumes:
-      - '/home/danieldbird/Dockers/prowlarr/config:/config'
+      - /home/danieldbird/Dockers/prowlarr/config:/config
     restart: unless-stopped
     image: lscr.io/linuxserver/prowlarr:latest
 
   plex:
     container_name: plex
     environment:
-      - TZ=Pacific/Auckland
+      - TZ=Australia/Brisbane
       - PLEX_CLAIM=$PLEX_CLAIM
     volumes:
-      - '/home/danieldbird/Dockers/plex/config:/config'
-      - '/home/danieldbird/Dockers/plex/transcode:/transcode'
-      - '/mnt/nas/Media:/data'
+      - /home/danieldbird/Dockers/plex/config:/config
+      - /home/danieldbird/Dockers/plex/transcode:/transcode
+      - /mnt/nas/Media:/data
     network_mode: host
     restart: unless-stopped
     image: plexinc/pms-docker:latest
@@ -129,37 +129,37 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Pacific/Auckland
+      - TZ=Australia/Brisbane
     volumes:
-      - '/home/danieldbird/Dockers/radarr/config:/config'
-      - '/mnt/nas/Media/Movies/Adult:/adult'
-      - '/mnt/nas/Media/Movies/Kid:/kid'
-      - '/mnt/nas/Media/Downloads:/downloads'
+      - /home/danieldbird/Dockers/radarr/config:/config
+      - /mnt/nas/Media/Movies/Adult:/adult
+      - /mnt/nas/Media/Movies/Kid:/kid
+      - /mnt/nas/Media/Downloads:/downloads
     network_mode: host
     restart: unless-stopped
-    image: 'ghcr.io/linuxserver/radarr:latest'
+    image: ghcr.io/linuxserver/radarr:latest
 
   sonarr:
     container_name: sonarr
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Pacific/Auckland
+      - TZ=Australia/Brisbane
     volumes:
-      - '/home/danieldbird/Dockers/sonarr/config:/config'
-      - '/mnt/nas/Media/TV Shows/Adult:/adult'
-      - '/mnt/nas/Media/TV Shows/Kid:/kid'
-      - '/mnt/nas/Media/Downloads:/downloads'
+      - /home/danieldbird/Dockers/sonarr/config:/config
+      - /mnt/nas/Media/TV Shows/Adult:/adult
+      - /mnt/nas/Media/TV Shows/Kid:/kid
+      - /mnt/nas/Media/Downloads:/downloads
     network_mode: host
     restart: unless-stopped
-    image: 'ghcr.io/linuxserver/sonarr:latest'
+    image: ghcr.io/linuxserver/sonarr:latest
 
   # readarr:
   #   container_name: readarr
   #   environment:
   #     - PUID=1000
   #     - PGID=1000
-  #     - TZ=Pacific/Auckland
+  #     - TZ=Australia/Brisbane
   #   volumes:
   #     - '/home/danieldbird/Dockers/readarr/config:/config'
   #     - '/mnt/nas/Media/Books:/books'
@@ -172,7 +172,7 @@ services:
   #   environment:
   #     - PUID=1000
   #     - PGID=1000
-  #     - TZ=Pacific/Auckland
+  #     - TZ=Australia/Brisbane
   #   ports:
   #     - '8080:8080'
   #     - '8081:8081'
